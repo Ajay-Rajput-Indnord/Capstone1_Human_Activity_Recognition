@@ -1,4 +1,11 @@
-from data_loader import load_data, data_info
-load_data(r'C:\Users\FCI\Documents\Capstone1\dataset\train.csv')
-#print(load_data(r'C:\Users\FCI\Documents\Capstone1\dataset\train.csv'))
-data_info()
+from evaluation import accuracy, report
+
+
+
+def main():
+    
+    return accuracy(), report()
+
+
+if __name__ == "__main__":
+    main()

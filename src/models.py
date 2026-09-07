@@ -2,7 +2,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.pipeline import Pipeline
 from sklearn.feature_selection import SelectKBest, f_classif
 from sklearn.svm import SVC
-from data_loader import feture, target
+from src.data_loader import feture, target
 
 
 

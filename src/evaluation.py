@@ -1,5 +1,5 @@
 from sklearn.metrics import accuracy_score, classification_report
-from models import train_test_split_fun, model_prediction
+from src.models import train_test_split_fun, model_prediction
 
 
 

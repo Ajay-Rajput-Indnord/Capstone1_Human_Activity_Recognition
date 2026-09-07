@@ -1,9 +1,10 @@
-from evaluation import accuracy, report
+from src.evaluation import accuracy, report
 
 
 
 def main():
     
+
     return accuracy(), report()
 
 

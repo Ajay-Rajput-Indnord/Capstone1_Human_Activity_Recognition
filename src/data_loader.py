@@ -1,12 +1,12 @@
 import pandas as pd
 
 def load_data():
-    path=r'C:\Users\FCI\Documents\Capstone1\dataset\train.csv'
+    path=r'dataset\train.csv'
     global data
     data=pd.read_csv(path)
     return data
 
-    print('data loaded sucsses full')
+    #print('data loaded sucsses full')
 
 
 def data_info():

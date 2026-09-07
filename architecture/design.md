@@ -14,11 +14,12 @@ The architecture separates dataset handling, preprocessing, feature selection, m
 The core Machine Learning pipeline will be implemented independently from the final reporting notebook.
 
 ---
+
 ## Architectural Decisions
 
 ### Data Source
 
-Use the existing `train.csv` and `test.csv` datasets as the primary data sources.
+Use the existing train.csv and test.csv datasets as the primary data sources.
 
 Reason: The project already provides predefined training and testing datasets, allowing the models to be evaluated consistently using the same data split.
 
@@ -34,9 +35,9 @@ The dataset will be divided into:
 - **Subject:** Participant identifier.
 - **Activity:** Target variable.
 
-The `subject` column will not be included as a normal model feature because it identifies the participant rather than representing sensor measurements.
+The subject column will not be included as a normal model feature because it identifies the participant rather than representing sensor measurements.
 
-The `Activity` column will be used as the classification target.
+The Activity column will be used as the classification target.
 
 ---
 
@@ -47,6 +48,7 @@ Three feature conditions will be implemented.
 Reason: Comparing the complete feature space with two different feature-selection methodologies allows the effect of dimensionality reduction to be evaluated systematically.
 
 ---
+
 ### Feature Selection — Mutual Information
 
 Use **Mutual Information** as the filter-based feature-selection technique.
@@ -54,6 +56,7 @@ Use **Mutual Information** as the filter-based feature-selection technique.
 The selector will be fitted using training data only and the same fitted selector will transform both training and test features.
 
 ---
+
 ### Feature Selection — RFE
 
 Use **Recursive Feature Elimination (RFE)** as the wrapper-based feature-selection technique.
@@ -84,9 +87,10 @@ Classifiers
     └── Discriminant
 ```
 
-Each classifier must expose a consistent `fit()` and `predict()` interface through the selected Machine Learning framework.
+Each classifier must expose a consistent fit() and predict() interface through the selected Machine Learning framework.
 
 ---
+
 ### Experiment Matrix
 
 Every configured classifier will be evaluated under all three feature conditions.
@@ -488,7 +492,7 @@ The following constraints are mandatory:
 - Mutual information must be implemented as the filter-based selection method.
 - RFE must be implemented as the wrapper-based selection method.
 - Test data must not be used for feature selection or model training.
-- The `subject` identifier must remain separate from the sensor feature matrix.
+- The subject identifier must remain separate from the sensor feature matrix.
 - Original dataset files must not be modified.
 - Training time must be recorded.
 - Accuracy, precision, recall, F1-score, and confusion matrices must be generated.

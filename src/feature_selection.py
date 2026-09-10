@@ -1,42 +1,34 @@
-from src.data_loader import feture, target
-import pandas as pd
-from sklearn.feature_selection import SelectKBest, mutual_info_classif
-from sklearn.feature_selection import SelectKBest, f_classif
-from sklearn.feature_selection import SelectFromModel
-from sklearn.feature_selection import RFE
+from sklearn.feature_selection import (
+    SelectKBest,
+    f_classif,
+    mutual_info_classif,
+    RFE
+)
 from sklearn.ensemble import RandomForestClassifier
 
+
 def all_features_fs():
-    # to select all feature using f_classif
-    selector = SelectKBest(
+    return SelectKBest(
         score_func=f_classif,
         k="all"
     )
-    return selector
 
 
-def f_classif_fs():
-    # selecting top 150 feature using f_classif
-    
-    selector = SelectKBest(f_classif, k=150)
-    return selector
+def f_classif_selection(k=350):
+    return SelectKBest(
+        score_func=f_classif,
+        k=k
+    )
 
 
-def mutual_info_classif_fs():
-    # selecting top 150 feature using mutual_info_classif
-
-    
-    selector = SelectKBest(mutual_info_classif, k=150)
-    return selector
-
-
-
-
+def mutual_info_selection(k=350):
+    return SelectKBest(
+        score_func=mutual_info_classif,
+        k=k
+    )
 
 
 def rfe_feature_selection(k=350):
-    # selecting top 350 feature using rfe_feature_selection
-
 
     estimator = RandomForestClassifier(
         n_estimators=100,
@@ -45,14 +37,8 @@ def rfe_feature_selection(k=350):
         class_weight="balanced"
     )
 
-    selector = RFE(
+    return RFE(
         estimator=estimator,
         n_features_to_select=k,
         step=10
     )
-
-    return selector
-
-
-
-

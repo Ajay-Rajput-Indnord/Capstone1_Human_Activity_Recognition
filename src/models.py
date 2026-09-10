@@ -1,29 +1,25 @@
-#from sklearn.model_selection import train_test_split
 from sklearn.pipeline import Pipeline
-from sklearn.feature_selection import SelectKBest, f_classif, mutual_info_classif
 from sklearn.preprocessing import PowerTransformer, StandardScaler
+
 from sklearn.linear_model import LogisticRegression
 from sklearn.neighbors import KNeighborsClassifier
-#from src.feature_selection import ExtraTreesClassifier
-from sklearn.ensemble import RandomForestClassifier
+
+from sklearn.ensemble import ExtraTreesClassifier, RandomForestClassifier
+
 from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
 from sklearn.svm import SVC
-from src.data_loader import feture, target
-from src.data_loader import test_feture, test_target
-from src.feature_selection import rfe_feature_selection
-import time
+
+
 
 
 # =========================================================
 # extra_trees - ENSEMBLE FAMILY
 # =========================================================
-def extra_trees_model():
+def extra_trees_model(selector):
     
-    extra_trees_model = Pipeline([
+    return  Pipeline([
            ("transform", PowerTransformer(method="yeo-johnson")),
-    ("selection",
-        rfe_feature_selection(k=350)),
-        #SelectKBest(f_classif, k=350)),
+    ("selection",selector),
     ("classifier", ExtraTreesClassifier(
         n_estimators=500,
     max_depth=15,
@@ -37,17 +33,15 @@ def extra_trees_model():
 ])
     
 
-    return extra_trees_model
+
 
 # =========================================================
 # logistic_regression - Linear / statistical familyY
 # =========================================================
-def logistic_regression_model():
-    logistic_regression_model= Pipeline([
+def logistic_regression_model(selector):
+    return Pipeline([
         ("scaler",StandardScaler()),
-        ("select", 
-            rfe_feature_selection(k=350)),
-         #SelectKBest(f_classif, k=250)),
+        ("select", selector),
         ("model", LogisticRegression(
             C=1.0,
             max_iter=5000,
@@ -58,17 +52,14 @@ def logistic_regression_model():
     ])
 
 
-    return logistic_regression_model
 
 # =========================================================
 # KNN - Instance-based family
 # =========================================================
-def knn_model():
-    knn_model = Pipeline([
+def knn_model(selector):
+    return Pipeline([
         ("scaler", StandardScaler()),
-        ("select",rfe_feature_selection(k=350)),
- 
-         #SelectKBest(f_classif, k=150)),
+        ("select", selector),
         ("model", KNeighborsClassifier(
             n_neighbors=7,
             weights="distance",
@@ -78,19 +69,16 @@ def knn_model():
         ))
     ])
    
-    return knn_model
 
 
 # =========================================================
 # rbf_svm - Kernal FAMILY
 # =========================================================
-def rbf_svm_model():
-    svm = Pipeline([
+def rbf_svm_model(selector):
+    return Pipeline([
         ("scaler", StandardScaler()),
-        ("select", 
-            rfe_feature_selection(k=350)),
-
-         #SelectKBest(f_classif, k=150)),
+        ("select", selector),
+            
         ("model", SVC(
             kernel="rbf",
             C=10,
@@ -101,7 +89,7 @@ def rbf_svm_model():
     ])
   
 
-    return svm
+  
 
 
 
@@ -109,14 +97,12 @@ def rbf_svm_model():
 # RANDOM FOREST - ENSEMBLE FAMILY
 # =========================================================
 
-def random_forest_model():
+def random_forest_model(selector):
 
-    random_forest = Pipeline([
+    return Pipeline([
         ("scaler", StandardScaler()),
 
-        ("select",
-            rfe_feature_selection(k=350)),
-            #SelectKBest(score_func=f_classif,k=350)),
+        ("select", selector),
 
         ("model", RandomForestClassifier(
             n_estimators=500,
@@ -131,21 +117,18 @@ def random_forest_model():
     ])
 
 
-    return random_forest
 
 
 # =========================================================
 # LDA - DISCRIMINANT FAMILY
 # =========================================================
 
-def lda_model():
+def lda_model(selector):
 
-    lda = Pipeline([
+    return Pipeline([
         ("scaler", StandardScaler()),
 
-        ("select",
-         rfe_feature_selection(k=350)),
-    #     SelectKBest(score_func=mutual_info_classif,k=350)),
+        ("select", selector),
 
         ("model", LinearDiscriminantAnalysis(
             solver="svd"
@@ -153,27 +136,3 @@ def lda_model():
     ])
 
 
-    return lda
-
-from sklearn.ensemble import ExtraTreesClassifier
-def model_prediction():
-    # TAKE input x_train and y_train select model and fit it on this data and predict
-    X_train=feture()
-    y_train=target()
-    global model
-    model=logistic_regression_model()
-    start = time.time()
-    fitted_model=model.fit(X_train, y_train)
-    end = time.time()
-    print("model traing time is :", end - start)
-    val_pred = fitted_model.predict(X_train)
-    
-    return  model, val_pred, y_train
-
-def model_pred_test():
-    # use test data and pridict output
-    #model, val_pred, y_train=model_prediction()
-    tf=test_feture()
-    tt=test_target()   
-    test_output=model.predict(tf)   
-    return test_output

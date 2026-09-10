@@ -1,0 +1,6 @@
+{
+    "train_accuracy": 1.0,
+    "train_classification_report": "                    precision    recall  f1-score   support\n\n            LAYING       1.00      1.00      1.00      1407\n           SITTING       1.00      1.00      1.00      1286\n          STANDING       1.00      1.00      1.00      1374\n           WALKING       1.00      1.00      1.00      1226\nWALKING_DOWNSTAIRS       1.00      1.00      1.00       986\n  WALKING_UPSTAIRS       1.00      1.00      1.00      1073\n\n          accuracy                           1.00      7352\n         macro avg       1.00      1.00      1.00      7352\n      weighted avg       1.00      1.00      1.00      7352\n",
+    "test_accuracy": 0.9440108585001696,
+    "test_classification_report": "                    precision    recall  f1-score   support\n\n            LAYING       1.00      1.00      1.00       537\n           SITTING       0.98      0.89      0.93       491\n          STANDING       0.91      0.98      0.94       532\n           WALKING       0.92      0.98      0.95       496\nWALKING_DOWNSTAIRS       0.96      0.85      0.90       420\n  WALKING_UPSTAIRS       0.90      0.94      0.92       471\n\n          accuracy                           0.94      2947\n         macro avg       0.95      0.94      0.94      2947\n      weighted avg       0.95      0.94      0.94      2947\n"
+}

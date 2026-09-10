@@ -1,11 +1,17 @@
-from data_loader import feture, target
+from src.data_loader import feture, target
 import pandas as pd
-# x=feture()
-# print(x)
-# y=target()
-# print(y)
-
+from sklearn.feature_selection import SelectKBest, mutual_info_classif
 from sklearn.feature_selection import SelectKBest, f_classif
+from sklearn.ensemble import ExtraTreesClassifier
+from sklearn.feature_selection import SelectFromModel
+
+def all_features_fs():
+    selector = SelectKBest(
+        score_func=f_classif,
+        k="all"
+    )
+    return selector
+
 
 def f_classif_fs():
     
@@ -13,14 +19,12 @@ def f_classif_fs():
     return selector
 
 
-from sklearn.feature_selection import SelectKBest, mutual_info_classif
 def mutual_info_classif_fs():
     
     selector = SelectKBest(mutual_info_classif, k=150)
     return selector
 
-from sklearn.ensemble import ExtraTreesClassifier
-from sklearn.feature_selection import SelectFromModel
+
 def ExtraTreesClassifier_fc():
     
     selector = SelectFromModel(

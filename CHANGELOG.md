@@ -1,6 +1,14 @@
 # Changelog
 
-All notable changes to this project will be documented in this file.
+
+## Unreleased
+## 07-09-2026
+### Added
+
+- Added `main.py` as the application entry point.
+
+**commit:** `feat: add main.py file in root folder`
+
 
 ## 07-09-2026
 

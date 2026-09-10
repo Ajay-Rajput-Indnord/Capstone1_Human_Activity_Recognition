@@ -1,16 +1,16 @@
-# Handoff: `feat: add main.py file in root folder`
+# Handoff: `feat: add result graphs ant two models`
 
 ## Summary
 
-Add `main.py` at the repository root as the application's entry point.
+Add `graphs in results/graph.
 
 ## Change included
 
-- Add root-level `main.py`.
+- Add root-level `result/ graph and two models in models.py`.
 
 ## Validation
 
-Run the application or its relevant test command after the file's implementation is available.
+using graph show selected features, add random forest and ida model.
 
 ## Follow-up
 

@@ -2,6 +2,13 @@
 
 
 ## Unreleased
+## 10-09-2026
+### Added
+
+- Added `results/graphs` the graphs of selected feturse along with score and in 'model.py' add to models.
+
+**commit:** `feat: add result graphs and two  models'
+
 ## 07-09-2026
 ### Added
 

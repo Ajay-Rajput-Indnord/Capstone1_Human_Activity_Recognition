@@ -1,0 +1,32 @@
+0.9813656147986942
+
+model performance in training is
+                    precision    recall  f1-score   support
+
+            LAYING       0.99      1.00      1.00      1407
+           SITTING       0.95      0.94      0.95      1286
+          STANDING       0.96      0.96      0.96      1374
+           WALKING       1.00      1.00      1.00      1226
+WALKING_DOWNSTAIRS       1.00      1.00      1.00       986
+  WALKING_UPSTAIRS       1.00      1.00      1.00      1073
+
+          accuracy                           0.98      7352
+         macro avg       0.98      0.98      0.98      7352
+      weighted avg       0.98      0.98      0.98      7352
+
+
+0.9606379368849678
+
+model performance in testing is
+                    precision    recall  f1-score   support
+
+            LAYING       1.00      1.00      1.00       537
+           SITTING       0.94      0.88      0.91       491
+          STANDING       0.89      0.95      0.92       532
+           WALKING       0.98      0.99      0.98       496
+WALKING_DOWNSTAIRS       1.00      0.97      0.98       420
+  WALKING_UPSTAIRS       0.96      0.98      0.97       471
+
+          accuracy                           0.96      2947
+         macro avg       0.96      0.96      0.96      2947
+      weighted avg       0.96      0.96      0.96      2947

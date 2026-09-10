@@ -1,20 +1,30 @@
 # Changelog
 
+All notable changes to this project will be documented in this file.
 
-## Unreleased
 ## 10-09-2026
+
+**commit:** `feat: add result graphs and two  models`
+
 ### Added
 
 - Added `results/graphs` the graphs of selected feturse along with score and in 'model.py' add to models.
 
-**commit:** `feat: add result graphs and two  models'
+## 10-09-2026
+
+**commit:** `feat : add results of ml models in results folder`
+
+### Added
+
+- Added results of ml models into the result folder
 
 ## 07-09-2026
+
+**commit:** `feat: add main.py file in root folder`
+
 ### Added
 
 - Added `main.py` as the application entry point.
-
-**commit:** `feat: add main.py file in root folder`
 
 
 ## 07-09-2026
@@ -29,6 +39,7 @@
 
 - altered some content in design and proposal files
 
+
 ## 06-09-2026
 
 **commit:** `feat : add complete working ML pipeline`
@@ -36,6 +47,7 @@
 ### Changed
 
 - changed some parts of proposal.md file
+
 
 ## 06-09-2026
 

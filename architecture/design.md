@@ -6,7 +6,7 @@ Implement a modular Machine Learning architecture for **Human Activity Recogniti
 
 The system will evaluate all selected classifiers across three feature conditions:
 1. **All Features** — all 561 sensor-derived features.
-2. **Mutual Information** — filter-based feature selection.
+2. **Anova** — filter-based feature selection.
 3. **RFE** — wrapper-based Recursive Feature Elimination.
 
 The architecture separates dataset handling, preprocessing, feature selection, model construction, training, evaluation, result storage, and reporting.
@@ -49,9 +49,9 @@ Reason: Comparing the complete feature space with two different feature-selectio
 
 ---
 
-### Feature Selection — Mutual Information
+### Feature Selection — Anova
 
-Use **Mutual Information** as the filter-based feature-selection technique.
+Use **Anova** as the filter-based feature-selection technique.
 
 The selector will be fitted using training data only and the same fitted selector will transform both training and test features.
 
@@ -115,7 +115,7 @@ The system will be divided into the following logical components:
                              ▼
                     ┌──────────────────┐
                     │  Data Loader &   │
-                    │    Validator     │
+                    │    preprocess    │
                     │ data_loader.py   │
                     └────────┬─────────┘
                              │
@@ -130,8 +130,8 @@ The system will be divided into the following logical components:
               │              │              │
               ▼              ▼              ▼
         ┌──────────┐   ┌───────────┐   ┌──────────┐
-        │   ALL    │   │  Mutual   │   │   RFE    │
-        │ Features │   │   Info    │   │          │
+        │   ALL    │   │           │   │   RFE    │
+        │ Features │   │   Anova   │   │          │
         │          │   │           │   │          │
         └────┬─────┘   └─────┬─────┘   └────┬─────┘
              │               │              │
@@ -214,13 +214,13 @@ Supported methods:
 
 ```text
 all
-mutual_information
+Anova
 rfe
 ```
 
 For the `all` condition, no feature selection will be performed.
 
-For `mutual_information`, the Mutual Information selector will be created.
+For `Anova`, the Anova selector will be created.
 
 For `rfe`, the configured RFE selector will be created.
 
@@ -344,7 +344,7 @@ A centralized configuration should define:
 Feature Conditions
 Classifier List
 Classifier Families
-Mutual information Parameters
+Anova Parameters
 RFE Parameters
 Evaluation Parameters
 Output Paths
@@ -374,7 +374,6 @@ Capstone_1/
 │   ├── data_loader.py
 │   ├── evaluation.py
 │   ├── feature_selection.py
-│   ├── main.py
 │   └── models.py
 │
 ├── run_experiment.py
@@ -488,8 +487,8 @@ The following constraints are mandatory:
 
 - All selected classifiers must be evaluated.
 - Every classifier must be evaluated under all three feature conditions.
-- The three feature conditions must be All Features, Mutual information and RFE.
-- Mutual information must be implemented as the filter-based selection method.
+- The three feature conditions must be All Features, Anova and RFE.
+- Anova must be implemented as the filter-based selection method.
 - RFE must be implemented as the wrapper-based selection method.
 - Test data must not be used for feature selection or model training.
 - The subject identifier must remain separate from the sensor feature matrix.
@@ -515,7 +514,7 @@ The recommended implementation order is:
         ↓
 3. Feature / Target Processor
         ↓
-4. Mutual information Feature Selector
+4. Anova Feature Selector
         ↓
 5. RFE Feature Selector
         ↓

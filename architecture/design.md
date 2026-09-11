@@ -40,12 +40,13 @@ Capstone_1/
 ├── results/
 │   ├── experiment_results.csv
 │   ├── notebook.ipynb
-│   └── graphs/
+│   ├── graphs/
+|   └── evaluation/
 ├── src/
 │   ├── data_loader.py
-│   ├── evaluation.py
 │   ├── feature_selection.py
 │   └── models.py
+├── evaluation.py
 ├── main.py
 ├── run_experiments.py
 ├── requirements.txt
@@ -208,28 +209,6 @@ def lda_model(selector: sklearn.base.BaseEstimator) -> sklearn.pipeline.Pipeline
 
 Returns a pipeline with StandardScaler the supplied selector, and `LinearDiscriminantAnalysis` using the SVD solver.
 
-### `src/evaluation.py`
-
-The current evaluation module expects prediction helpers named `model_prediction` and `model_pred_test` to be available from `src.models`.
-
-```python
-def traing() -> tuple[float, str]
-```
-
-Trains or obtains the configured model, predicts the training data, and returns training accuracy and a training classification report. The function name is an existing spelling mistake for `training`.
-
-```python
-def testing() -> tuple[float, str]
-```
-
-Obtains test predictions and returns test accuracy and a test classification report.
-
-```python
-def create_result(file_name: str) -> None
-```
-
-Runs the training and testing evaluation functions and writes the resulting metrics to the supplied output path.
-
 ## Experiment matrix
 
 Every experiment selects 350 features and records model name, feature-selection condition, train accuracy, test accuracy, training time, testing time, and classification reports in `results/experiment_results.csv`.
@@ -277,9 +256,8 @@ The best recorded configuration is Logistic Regression with RFE and 350 selected
 
 ## Current implementation notes
 
-1. `main.py` is a model entry point .
-2. `src/evaluation.py` imports `model_prediction` and `model_pred_test`, but those functions are not present in the current `src/models.py`. 
-3. The completed 18-experiment results were produced through the notebook workflow and are already persisted in `results/experiment_results.csv`.
+1. `main.py` is a model entry point . 
+2. The completed 18-experiment results were produced through the notebook workflow and are already persisted in `results/experiment_results.csv`.
 
 ## Reproducibility
 
@@ -290,7 +268,6 @@ The best recorded configuration is Logistic Regression with RFE and 350 selected
 
 ## Implementation sequence
 
-1. Reconcile `src/evaluation.py`, `src/models.py`, and `main.py`.
-2. Extract the notebook’s 18-experiment loop into a maintainable Python runner.
-3. Add confusion-matrix calculation and reporting.
-4. Keep result storage and notebook reporting separate from model implementation.
+1. Extract the notebook’s 18-experiment loop into a maintainable Python runner.
+2. Add confusion-matrix calculation and reporting.
+3. Keep result storage and notebook reporting separate from model implementation.

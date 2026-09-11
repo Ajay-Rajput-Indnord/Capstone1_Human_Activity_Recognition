@@ -25,11 +25,12 @@ Different Machine Learning algorithms may behave differently on the same sensor 
 A controlled comparison of multiple classifiers from different algorithm families is required to determine which approaches perform best for Human Activity Recognition.
 
 The project will also investigate whether feature selection can reduce the dimensionality of the dataset while maintaining or improving classification performance and reducing computational cost.
+
 ---
 
 ## 3. Scope of Work
 
-### What is Changing (In-Scope)
+### What is Changing 
 
 - **ADDED**: A modular data-loading and validation component for train.csv and test.csv.
 - **ADDED**: An all-features experimental condition using the complete sensor feature set.
@@ -41,9 +42,8 @@ The project will also investigate whether feature selection can reduce the dimen
 - **ADDED**: Persistent storage of experiment results in a machine-readable format.
 - **ADDED**: A final reporting notebook that shows results.
 
-### What is Not Changing (Out-of-Scope)
+### What is Not Changing 
 
-- We are not implementing real-time sensor acquisition.
 - We are not modifying the original train.csv or test.csv datasets.
 - We are not using the test dataset for model training.
 - We are not using test data to fit feature-selection techniques.

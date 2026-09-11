@@ -1,216 +1,126 @@
 # Human Activity Recognition
 
-Machine-learning project for recognizing human activities from smartphone accelerometer and gyroscope data.
+Machine-learning project for classifying six human activities from smartphone accelerometer and gyroscope features. The current workflow runs 18 experiments, then creates comparison tables and plots.
 
-The project compares classification models and feature-selection techniques to understand which combination provides the best predictive performance and computational trade-off.
+## Data
 
-## Project overview
+Input files:
 
-Each dataset row contains 561 sensor-derived features, a participant identifier, and an activity label. The model predicts one of six activities:
+```text
+dataset/train.csv
+dataset/test.csv
+```
 
-- WALKING
-- WALKING_UPSTAIRS
-- WALKING_DOWNSTAIRS
-- SITTING
-- STANDING
-- LAYING
+Each row contains 561 sensor features, `subject`, and the `Activity` target. `subject` is excluded from training. The target classes are `WALKING`, `WALKING_UPSTAIRS`, `WALKING_DOWNSTAIRS`, `SITTING`, `STANDING`, and `LAYING`.
 
-This is a supervised, multiclass classification problem.
+Run commands from the repository root because the loaders use relative paths.
 
-## Data flow
+## Workflow
 
 ```mermaid
 flowchart TD
-    A[dataset/train.csv and dataset/test.csv] --> B[Load data]
-    B --> C[Separate sensor features]
-    C --> D[Remove subject identifier]
-    D --> E{Feature condition}
-
-    E -->|All Features| F[Use all 561 features]
-    E -->|F-Classif| G[SelectKBest f_classif]
-    E -->|RFE| H[Recursive Feature Elimination]
-
-    F --> I[Model pipeline]
-    G --> I
-    H --> I
-
-    I --> J[Logistic Regression]
-    I --> K[K-Nearest Neighbors]
-    I --> L[RBF Support Vector Machine]
-    I --> M[Extra Trees]
-    I --> N[Random Forest]
-    I --> O[LDA]
-
-    J --> P[Predictions]
-    K --> P
-    L --> P
-    M --> P
-    N --> P
-    O --> P
-
-    P --> Q[Accuracy, precision, recall, F1]
-    Q --> R[CSV results]
-    R --> S[Notebook analysis and visualizations]
+    A[Train and test CSV files] --> B[src/data_loader.py]
+    B --> C[Remove subject and Activity from X]
+    B --> D[Extract Activity as y]
+    C --> E[run_experiments.py]
+    D --> E
+    E --> F[Create selector and model pipeline]
+    F --> G[Fit on train data]
+    G --> H[Predict train and test data]
+    H --> I[Calculate metrics and timings]
+    I --> J[results/experiment_results.csv]
+    J --> K[evaluation.py]
+    K --> L[Evaluation CSVs and PNG plots]
 ```
 
-## Dataset
+`python main.py` runs the complete workflow: it executes `run_all_experiments()`, saves the 18 rows, and then calls `evaluation()`.
 
-The 563 columns consist of:
+## Experiment configuration
 
-- 561 numerical sensor features
-- subject - the participant identifier
-- Activity - the target label
+The matrix is defined in `run_experiments.py`:
 
-The subject column is excluded from model training .
+```text
+6 models × 3 feature-condition labels = 18 experiments
+```
+
+Models: Logistic Regression, KNN, RBF SVM, Extra Trees, Random Forest, and LDA.
+
+Feature-condition labels: `all_features`, `F-Classif`, and `RFE`.
+
+`N_FEATURES = 350` is passed to every selector by the runner. Therefore, in the current code, `all_features` also selects 350 features with `SelectKBest(f_classif)`; it does not use all 561 raw features. `F-Classif` uses the same selector explicitly. `RFE` uses a balanced 100-tree Random Forest estimator and removes features in steps of 10.
+
+Each model is a scikit-learn `Pipeline`, keeping preprocessing and selection fitted on training data before applying them to test data.
+
+## Recorded results
+
+The latest checked-in results contain 18 rows. The best run is:
+
+```text
+Logistic Regression + RFE + 350 features
+Test accuracy: 96.23%
+```
+
+| Feature condition | Best test accuracy |
+|---|---:|
+| `RFE` | 96.23% |
+| `F-Classif` | 95.52% |
+| `all_features` | 95.52% |
+
+Generated outputs:
+
+```text
+results/experiment_results.csv
+results/evaluation/all_results.csv
+results/evaluation/model_comparison.csv
+results/evaluation/feature_selection_comparison.csv
+results/evaluation/top_experiments.csv
+results/evaluation/test_accuracy.png
+results/evaluation/train_vs_test_accuracy.png
+results/evaluation/training_time.png
+```
+
+`results/notebook.ipynb` is a supplementary reporting artifact.
 
 ## Repository structure
 
 ```text
 Capstone_1/
-├── architecture/
-│   ├── design.md 
-│   └── proposal.md  
-├── dataset/
-│   ├── train.csv   
-│   └── test.csv  
-├── results/
-│   ├── experiment_results.csv 
-│   └── notebook.ipynb     
-├── src/
-│   ├── data_loader.py      
-│   ├── evaluation.py       
-│   ├── feature_selection.py   
-│   └── models.py      
-├── main.py   
-├── run_experiments.py            
-├── requirements.txt   
-├── HANDOFF.md     
-└── README.md         
+├── architecture/       # Proposal and design documentation
+├── dataset/            # train.csv and test.csv
+├── results/            # Experiment, evaluation, graph, and notebook outputs
+├── src/                # Data loading, selectors, and model factories
+├── main.py             # End-to-end entry point
+├── run_experiments.py  # Training and experiment result generation
+├── evaluation.py       # Result analysis and plot generation
+├── requirements.txt
+├── HANDOFF.md
+└── README.md
 ```
 
-## Machine-learning models
-
-The current implementation includes six classifiers.
-
-Several models use a scikit-learn Pipeline containing preprocessing, feature selection, and classification. This keeps transformations applied consistently during training and prediction.
-
-## Feature selection
-
-The project compares three feature conditions. They are All Features, F-Classif, and RFE. The completed selection-based experiments use 350 selected features.
-
-### All Features
-
-Uses all 561 sensor features without feature reduction.
-
-### F-Classif
-
-Uses `SelectKBest` with `f_classif` to rank features according to their relationship with the activity classes.
-
-### RFE
-
-Recursive Feature Elimination uses a Random Forest estimator to repeatedly remove less important features until 350 remain. It is implemented in `src/feature_selection.py`.
-
-## Experiment matrix
-
-The completed experiment compares every classifier with every feature condition:
-
-```mermaid
-flowchart LR
-    A[6 classifiers] --> A1[Logistic Regression]
-    A --> A2[KNN]
-    A --> A3[RBF SVM]
-    A --> A4[Extra Trees]
-    A --> A5[Random Forest]
-    A --> A6[LDA]
-
-    B[3 feature conditions] --> B1[All Features]
-    B --> B2[F-Classif]
-    B --> B3[RFE]
-
-    A1 --> C[Evaluate every classifier × feature-condition pair]
-    A2 --> C
-    A3 --> C
-    A4 --> C
-    A5 --> C
-    A6 --> C
-    B1 --> C
-    B2 --> C
-    B3 --> C
-
-    C --> D[Persist comparable results]
-```
-
-The completed experiment contains:
-
-```text
-6 classifiers × 3 feature conditions = 18 experiments
-```
-
-The 18 experiment records are stored in `results/experiment_results.csv`. The root `main.py` remains a legacy single-model entry point; the completed experiment is represented by the results CSV and reporting notebook.
-
-## Evaluation metrics
-
-The current evaluator reports:
-
-- Accuracy
-- Per-class precision
-- Per-class recall
-- Per-class F1-score
-
-The experiment CSV also records training time, testing time, and the number of selected features. Confusion-matrix visualization remains a reporting improvement.
-
-## Existing results
-
-The completed experiment contains these best test accuracies by feature condition:
-
- All Features
- F-Classif 
- RFE 
-
-The best recorded configuration is Logistic Regression with RFE and 350 selected features.
-
-These are stored artifacts and are not automatically regenerated by the current entry point until the data path issue is fixed.
-
-## Data leakage policy
-
-The test data must only be used for final evaluation.
-
-Feature selectors and preprocessing steps must be fitted using training data only, then applied to the test data.
-
-The original CSV files should remain unchanged.
-
-## Setup
-
-Create and activate a virtual environment:
+## Setup and execution
 
 ```bash
 python -m venv venv
-venv\Scripts\activate
-```
-
-Install dependencies:
-
-```bash
+venv\\Scripts\\activate
 pip install -r requirements.txt
-```
-
-The main dependencies are:
-
-- pandas
-- scikit-learn
-- matplotlib
-
-## Running the project
-
-From the repository root:
-
-```bash
 python main.py
 ```
 
-## Project documentation
+To rerun only reporting against the existing experiment CSV:
 
-- architecture/proposal.md
-- architecture/design.md
-- HANDOFF.md
-- results/notebook.ipynb
+```bash
+python -c "from evaluation import evaluation; evaluation()"
+```
+
+Rerunning `main.py` overwrites the experiment CSV and evaluation artifacts.
+
+## Data leakage policy
+
+The test set is used only for final evaluation. Selectors and preprocessing are fitted through each training pipeline using training data, then applied to test data. The source CSVs are not modified.
+
+## Documentation
+
+- [Architecture proposal](architecture/proposal.md)
+- [Architecture design](architecture/design.md)
+- [Project handoff](HANDOFF.md)
+- [Reporting notebook](results/notebook.ipynb)

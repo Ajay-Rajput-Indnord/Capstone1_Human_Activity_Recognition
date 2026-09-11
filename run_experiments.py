@@ -17,8 +17,8 @@ from src.models import (
 )
 
 from src.feature_selection import (
+    all_features_fs,
     f_classif_selection,
-    mutual_info_selection,
     rfe_feature_selection
 )
 
@@ -42,8 +42,8 @@ models = {
 # ============================================================
 
 feature_methods = {
+    "all_features": all_features_fs,
     "F-Classif": f_classif_selection,
-    "Mutual Information": mutual_info_selection,
     "RFE": rfe_feature_selection
 }
 
@@ -246,8 +246,8 @@ def save_results(results):
 # MAIN
 # ============================================================
 
-if __name__ == "__main__":
+# if __name__ == "__main__":
 
-    results = run_all_experiments()
+#     results = run_all_experiments()
 
-    save_results(results)
+#     save_results(results)

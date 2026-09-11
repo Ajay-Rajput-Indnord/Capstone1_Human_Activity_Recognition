@@ -7,10 +7,10 @@ from sklearn.feature_selection import (
 from sklearn.ensemble import RandomForestClassifier
 
 
-def all_features_fs():
+def all_features_fs(k=561):
     return SelectKBest(
         score_func=f_classif,
-        k="all"
+        k=k
     )
 
 

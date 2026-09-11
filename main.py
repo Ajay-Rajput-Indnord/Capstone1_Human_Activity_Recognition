@@ -1,16 +1,15 @@
-from src.evaluation import traing, testing, create_result
+from run_experiments import run_all_experiments, save_results
+from evaluation import evaluation
 
 
 
 
 def main():
+    results = run_all_experiments()
+    save_results(results)
+
+    evaluation()
     
-    train_acc, train_report=traing()
-    test_acc, test_report=testing()
-    
-    print(f"model performance in traning  is {train_acc} accuracy \n model performance in traing  is \n {train_report} \n model performance in testing  is \n {test_acc} \n model performance in testing is \n  {test_report}")
-    #give file name
-    create_result(r'results\REF\logistic_regression_model.json')
     
 
 

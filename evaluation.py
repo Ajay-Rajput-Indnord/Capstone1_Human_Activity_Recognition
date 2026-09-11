@@ -497,7 +497,7 @@ def save_evaluation_results(
 # MAIN EVALUATION
 # ============================================================
 
-def main():
+def evaluation():
 
     print("=" * 70)
     print("MODEL EVALUATION")
@@ -551,5 +551,5 @@ def main():
     print("=" * 70)
 
 
-if __name__ == "__main__":
-    main()
+# if __name__ == "__main__":
+#     main()

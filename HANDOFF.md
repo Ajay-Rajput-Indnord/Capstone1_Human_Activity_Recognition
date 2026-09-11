@@ -14,7 +14,7 @@ Best recorded run: Logistic Regression + RFE, 350 features, 96.23% test accuracy
 From the repository root:
 
 ```bash
-venv\\Scripts\\activate
+venv\Scripts\activate
 python main.py
 ```
 

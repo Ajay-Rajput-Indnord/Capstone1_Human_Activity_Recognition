@@ -1,10 +1,20 @@
 # Changelog
 
 All notable changes to this project will be documented in this file.
+
 ## 11-09-2026
+
+**commit:** `docs: added the final report`
+
+### Added
+
+- Added the final report file in root .
+
+## 11-09-2026
+
 **commit:** `feat: add full working notebook`
 
-### changed
+### Changed
 
 - added notebook
 

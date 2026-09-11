@@ -1,21 +1,17 @@
-# Handoff: `docs: update project documentation`
+# Handoff: `feat: add result graphs ant two models`
 
 ## Summary
 
-Updated the project documentation to reflect the latest project structure, design, and changes.
+Add  run_experiments.py to run entire project
 
-## Changes Included
+## Change included
 
-- Updated `README.md` with the latest project information and structure.
-- Updated `architecture/design.md` to reflect the current project design and implementation.
-- Updated `CHANGELOG.md` with the latest project changes.
-- Updated `HANDOFF.md` with the current project handoff information.
+- Add root-level `add run_experiments did some changes in models.py and features_selection.py`.
 
 ## Validation
 
-- Reviewed the documentation for consistency with the current project structure.
-- Confirmed the documented files and project details are up to date.
-
+created experiment_results.csv to save model evaluation results
 ## Follow-up
 
-- Keep the documentation updated when major project changes are made.
+- Confirm the entry-point behavior and any required command-line arguments.
+- Add or update tests if the project has a test suite.

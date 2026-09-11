@@ -1,6 +1,14 @@
 # Changelog
 
 All notable changes to this project will be documented in this file.
+## 10-09-2026
+
+**commit:** 'feat: add run_experiments to run entire project'
+
+### Added
+
+- Added 'run_experiments.py file, experiment_results.csv file to store results of model evaluation'
+
 
 ## 10-09-2026
 

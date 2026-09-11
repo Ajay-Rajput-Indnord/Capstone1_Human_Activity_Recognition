@@ -1,5 +1,5 @@
-model,feature_selection,number_of_features,train_accuracy,test_accuracy,training_time,train_prediction_time,testing_time,train_classification_report,test_classification_report
-Extra Trees,F-Classif,350,0.999727965179543,0.9321343739395996,7.082263708114624,0.27927327156066895,0.16185879707336426,"                    precision    recall  f1-score   support
+model,feature_selection,number_of_features,train_accuracy,test_accuracy,training_time,train_prediction_time,testing_time,train_classification_report,test_classification_report,accuracy_gap
+Extra Trees,F-Classif,350,0.999727965179543,0.9321343739395996,7.082263708114624,0.2792732715606689,0.1618587970733642,"                    precision    recall  f1-score   support
 
             LAYING       1.00      1.00      1.00      1407
            SITTING       1.00      1.00      1.00      1286
@@ -23,8 +23,8 @@ WALKING_DOWNSTAIRS       0.94      0.83      0.88       420
           accuracy                           0.93      2947
          macro avg       0.93      0.93      0.93      2947
       weighted avg       0.93      0.93      0.93      2947
-"
-Extra Trees,Mutual Information,350,0.9998639825897715,0.9267051238547676,18.919984102249146,0.3307983875274658,0.1640021800994873,"                    precision    recall  f1-score   support
+",0.06759359123994335
+Extra Trees,Mutual Information,350,0.9998639825897716,0.9267051238547676,18.919984102249146,0.3307983875274658,0.1640021800994873,"                    precision    recall  f1-score   support
 
             LAYING       1.00      1.00      1.00      1407
            SITTING       1.00      1.00      1.00      1286
@@ -48,8 +48,8 @@ WALKING_DOWNSTAIRS       0.94      0.83      0.88       420
           accuracy                           0.93      2947
          macro avg       0.93      0.92      0.92      2947
       weighted avg       0.93      0.93      0.93      2947
-"
-Extra Trees,RFE,350,1.0,0.9368849677638276,49.14592218399048,0.3521537780761719,0.19428658485412598,"                    precision    recall  f1-score   support
+",0.07315885873500405
+Extra Trees,RFE,350,1.0,0.9368849677638276,49.14592218399048,0.3521537780761719,0.1942865848541259,"                    precision    recall  f1-score   support
 
             LAYING       1.00      1.00      1.00      1407
            SITTING       1.00      1.00      1.00      1286
@@ -73,8 +73,8 @@ WALKING_DOWNSTAIRS       0.96      0.86      0.91       420
           accuracy                           0.94      2947
          macro avg       0.94      0.93      0.93      2947
       weighted avg       0.94      0.94      0.94      2947
-"
-Logistic Regression,F-Classif,350,0.9832698585418934,0.9552086868001357,1.7093863487243652,0.05220484733581543,0.02001953125,"                    precision    recall  f1-score   support
+",0.06311503223617243
+Logistic Regression,F-Classif,350,0.9832698585418934,0.9552086868001356,1.7093863487243652,0.0522048473358154,0.02001953125,"                    precision    recall  f1-score   support
 
             LAYING       1.00      1.00      1.00      1407
            SITTING       0.96      0.95      0.95      1286
@@ -98,8 +98,8 @@ WALKING_DOWNSTAIRS       1.00      0.97      0.98       420
           accuracy                           0.96      2947
          macro avg       0.96      0.95      0.96      2947
       weighted avg       0.96      0.96      0.96      2947
-"
-Logistic Regression,Mutual Information,350,0.9795973884657236,0.9487614523243977,12.94979190826416,0.04721331596374512,0.026647567749023438,"                    precision    recall  f1-score   support
+",0.028061171741757818
+Logistic Regression,Mutual Information,350,0.9795973884657236,0.9487614523243976,12.94979190826416,0.0472133159637451,0.0266475677490234,"                    precision    recall  f1-score   support
 
             LAYING       1.00      1.00      1.00      1407
            SITTING       0.95      0.93      0.94      1286
@@ -123,8 +123,8 @@ WALKING_DOWNSTAIRS       1.00      0.96      0.98       420
           accuracy                           0.95      2947
          macro avg       0.95      0.95      0.95      2947
       weighted avg       0.95      0.95      0.95      2947
-"
-Logistic Regression,RFE,350,0.9933351468988031,0.9623345775364778,43.23736047744751,0.05414724349975586,0.019125699996948242,"                    precision    recall  f1-score   support
+",0.03083593614132607
+Logistic Regression,RFE,350,0.9933351468988032,0.9623345775364778,43.23736047744751,0.0541472434997558,0.0191256999969482,"                    precision    recall  f1-score   support
 
             LAYING       1.00      1.00      1.00      1407
            SITTING       0.98      0.98      0.98      1286
@@ -148,8 +148,8 @@ WALKING_DOWNSTAIRS       0.99      0.97      0.98       420
           accuracy                           0.96      2947
          macro avg       0.96      0.96      0.96      2947
       weighted avg       0.96      0.96      0.96      2947
-"
-KNN,F-Classif,350,1.0,0.8724126230064473,0.1649324893951416,2.958041191101074,0.13524127006530762,"                    precision    recall  f1-score   support
+",0.031000569362325425
+KNN,F-Classif,350,1.0,0.8724126230064473,0.1649324893951416,2.958041191101074,0.1352412700653076,"                    precision    recall  f1-score   support
 
             LAYING       1.00      1.00      1.00      1407
            SITTING       1.00      1.00      1.00      1286
@@ -173,8 +173,8 @@ WALKING_DOWNSTAIRS       0.94      0.74      0.83       420
           accuracy                           0.87      2947
          macro avg       0.88      0.87      0.87      2947
       weighted avg       0.88      0.87      0.87      2947
-"
-KNN,Mutual Information,350,1.0,0.8853070919579233,11.892127513885498,0.4127976894378662,0.17416691780090332,"                    precision    recall  f1-score   support
+",0.12758737699355271
+KNN,Mutual Information,350,1.0,0.8853070919579233,11.892127513885498,0.4127976894378662,0.1741669178009033,"                    precision    recall  f1-score   support
 
             LAYING       1.00      1.00      1.00      1407
            SITTING       1.00      1.00      1.00      1286
@@ -198,8 +198,8 @@ WALKING_DOWNSTAIRS       0.94      0.70      0.80       420
           accuracy                           0.89      2947
          macro avg       0.89      0.88      0.88      2947
       weighted avg       0.89      0.89      0.88      2947
-"
-KNN,RFE,350,1.0,0.9056667797760435,41.7944130897522,0.6345682144165039,0.28624463081359863,"                    precision    recall  f1-score   support
+",0.11469290804207666
+KNN,RFE,350,1.0,0.9056667797760436,41.7944130897522,0.6345682144165039,0.2862446308135986,"                    precision    recall  f1-score   support
 
             LAYING       1.00      1.00      1.00      1407
            SITTING       1.00      1.00      1.00      1286
@@ -223,7 +223,7 @@ WALKING_DOWNSTAIRS       0.94      0.78      0.85       420
           accuracy                           0.91      2947
          macro avg       0.91      0.90      0.90      2947
       weighted avg       0.91      0.91      0.91      2947
-"
+",0.0943332202239564
 RBF SVM,F-Classif,350,0.9793253536452666,0.9334916864608076,0.7249972820281982,1.981916904449463,0.8143601417541504,"                    precision    recall  f1-score   support
 
             LAYING       1.00      1.00      1.00      1407
@@ -248,8 +248,8 @@ WALKING_DOWNSTAIRS       0.98      0.90      0.94       420
           accuracy                           0.93      2947
          macro avg       0.94      0.93      0.93      2947
       weighted avg       0.94      0.93      0.93      2947
-"
-RBF SVM,Mutual Information,350,0.9749727965179543,0.9243298269426535,12.107601881027222,1.9049808979034424,0.7704200744628906,"                    precision    recall  f1-score   support
+",0.045833667184459026
+RBF SVM,Mutual Information,350,0.9749727965179544,0.9243298269426536,12.107601881027222,1.9049808979034424,0.7704200744628906,"                    precision    recall  f1-score   support
 
             LAYING       1.00      1.00      1.00      1407
            SITTING       0.94      0.92      0.93      1286
@@ -273,8 +273,8 @@ WALKING_DOWNSTAIRS       0.98      0.90      0.94       420
           accuracy                           0.92      2947
          macro avg       0.93      0.92      0.92      2947
       weighted avg       0.93      0.92      0.92      2947
-"
-RBF SVM,RFE,350,0.9976877040261154,0.9538513742789277,42.25934863090515,1.9205312728881836,0.8560168743133545,"                    precision    recall  f1-score   support
+",0.05064296957530079
+RBF SVM,RFE,350,0.9976877040261154,0.9538513742789276,42.25934863090515,1.920531272888184,0.8560168743133545,"                    precision    recall  f1-score   support
 
             LAYING       1.00      1.00      1.00      1407
            SITTING       0.99      1.00      0.99      1286
@@ -298,8 +298,8 @@ WALKING_DOWNSTAIRS       0.97      0.93      0.95       420
           accuracy                           0.95      2947
          macro avg       0.95      0.95      0.95      2947
       weighted avg       0.95      0.95      0.95      2947
-"
-Random Forest,F-Classif,350,0.9998639825897715,0.9144893111638955,7.213815450668335,0.23279500007629395,0.14835262298583984,"                    precision    recall  f1-score   support
+",0.04383632974718776
+Random Forest,F-Classif,350,0.9998639825897716,0.9144893111638956,7.213815450668335,0.2327950000762939,0.1483526229858398,"                    precision    recall  f1-score   support
 
             LAYING       1.00      1.00      1.00      1407
            SITTING       1.00      1.00      1.00      1286
@@ -323,8 +323,8 @@ WALKING_DOWNSTAIRS       0.95      0.84      0.89       420
           accuracy                           0.91      2947
          macro avg       0.92      0.91      0.91      2947
       weighted avg       0.92      0.91      0.91      2947
-"
-Random Forest,Mutual Information,350,0.9998639825897715,0.9131319986426875,17.87139868736267,0.2427198886871338,0.12977838516235352,"                    precision    recall  f1-score   support
+",0.08537467142587596
+Random Forest,Mutual Information,350,0.9998639825897716,0.9131319986426876,17.87139868736267,0.2427198886871338,0.1297783851623535,"                    precision    recall  f1-score   support
 
             LAYING       1.00      1.00      1.00      1407
            SITTING       1.00      1.00      1.00      1286
@@ -348,8 +348,8 @@ WALKING_DOWNSTAIRS       0.95      0.84      0.89       420
           accuracy                           0.91      2947
          macro avg       0.91      0.91      0.91      2947
       weighted avg       0.91      0.91      0.91      2947
-"
-Random Forest,RFE,350,1.0,0.9260264675941635,422.5334014892578,0.2643411159515381,0.25638580322265625,"                    precision    recall  f1-score   support
+",0.08673198394708403
+Random Forest,RFE,350,1.0,0.9260264675941636,422.5334014892578,0.2643411159515381,0.2563858032226562,"                    precision    recall  f1-score   support
 
             LAYING       1.00      1.00      1.00      1407
            SITTING       1.00      1.00      1.00      1286
@@ -373,8 +373,8 @@ WALKING_DOWNSTAIRS       0.96      0.86      0.91       420
           accuracy                           0.93      2947
          macro avg       0.93      0.92      0.92      2947
       weighted avg       0.93      0.93      0.93      2947
-"
-LDA,F-Classif,350,0.9733405875952121,0.9504580929759077,7.669868469238281,0.06975603103637695,0.04900026321411133,"                    precision    recall  f1-score   support
+",0.07397353240583637
+LDA,F-Classif,350,0.973340587595212,0.9504580929759076,7.669868469238281,0.0697560310363769,0.0490002632141113,"                    precision    recall  f1-score   support
 
             LAYING       0.99      1.00      0.99      1407
            SITTING       0.94      0.91      0.93      1286
@@ -398,8 +398,8 @@ WALKING_DOWNSTAIRS       1.00      0.95      0.97       420
           accuracy                           0.95      2947
          macro avg       0.96      0.95      0.95      2947
       weighted avg       0.95      0.95      0.95      2947
-"
-LDA,Mutual Information,350,0.9687159956474428,0.9453681710213777,14.858246803283691,0.06321072578430176,0.02594923973083496,"                    precision    recall  f1-score   support
+",0.022882494619304472
+LDA,Mutual Information,350,0.9687159956474428,0.9453681710213776,14.858246803283691,0.0632107257843017,0.0259492397308349,"                    precision    recall  f1-score   support
 
             LAYING       0.99      1.00      0.99      1407
            SITTING       0.93      0.90      0.91      1286
@@ -423,8 +423,8 @@ WALKING_DOWNSTAIRS       1.00      0.93      0.97       420
           accuracy                           0.95      2947
          macro avg       0.95      0.94      0.95      2947
       weighted avg       0.95      0.95      0.95      2947
-"
-LDA,RFE,350,0.9813656147986942,0.9606379368849678,44.71499800682068,0.059529781341552734,0.029679536819458008,"                    precision    recall  f1-score   support
+",0.023347824626065217
+LDA,RFE,350,0.9813656147986942,0.9606379368849678,44.71499800682068,0.0595297813415527,0.029679536819458,"                    precision    recall  f1-score   support
 
             LAYING       0.99      1.00      1.00      1407
            SITTING       0.95      0.94      0.95      1286
@@ -448,4 +448,4 @@ WALKING_DOWNSTAIRS       1.00      0.97      0.98       420
           accuracy                           0.96      2947
          macro avg       0.96      0.96      0.96      2947
       weighted avg       0.96      0.96      0.96      2947
-"
+",0.020727677913726428

@@ -2,533 +2,295 @@
 
 ## Overview
 
-Implement a modular Machine Learning architecture for **Human Activity Recognition (HAR)** using smartphone sensor data.
+This project implements a Machine Learning system for Human Activity Recognition using smartphone sensor data.
 
-The system will evaluate all selected classifiers across three feature conditions:
-1. **All Features** — all 561 sensor-derived features.
-2. **Anova** — filter-based feature selection.
-3. **RFE** — wrapper-based Recursive Feature Elimination.
+The dataset contains 561 sensor features, a subject identifier and Activity target. The system predicts six activities:
 
-The architecture separates dataset handling, preprocessing, feature selection, model construction, training, evaluation, result storage, and reporting.
+- `WALKING`
+- `WALKING_UPSTAIRS`
+- `WALKING_DOWNSTAIRS`
+- `SITTING`
+- `STANDING`
+- `LAYING`
 
-The core Machine Learning pipeline will be implemented independently from the final reporting notebook.
-
----
-
-## Architectural Decisions
-
-### Data Source
-
-Use the existing train.csv and test.csv datasets as the primary data sources.
-
-Reason: The project already provides predefined training and testing datasets, allowing the models to be evaluated consistently using the same data split.
-
-The original dataset files must remain unchanged.
-
----
-
-### Feature and Target Separation
-
-The dataset will be divided into:
-
-- **Sensor Features:** 561 feature columns.
-- **Subject:** Participant identifier.
-- **Activity:** Target variable.
-
-The subject column will not be included as a normal model feature because it identifies the participant rather than representing sensor measurements.
-
-The Activity column will be used as the classification target.
-
----
-
-### Feature Conditions
-
-Three feature conditions will be implemented.
-
-Reason: Comparing the complete feature space with two different feature-selection methodologies allows the effect of dimensionality reduction to be evaluated systematically.
-
----
-
-### Feature Selection — Anova
-
-Use **Anova** as the filter-based feature-selection technique.
-
-The selector will be fitted using training data only and the same fitted selector will transform both training and test features.
-
----
-
-### Feature Selection — RFE
-
-Use **Recursive Feature Elimination (RFE)** as the wrapper-based feature-selection technique.
-
-RFE will use a configured estimator to recursively remove less important features. The selector will be fitted using training data only and then applied to the test features.
-
-The exact RFE estimator and number of selected features will be maintained as configurable parameters.
-
----
-
-### Classifier Architecture
-
-All selected classifiers will be evaluated rather than selecting one classifier before experimentation.
-
-The classifiers will be organized by Machine Learning family:
+The current experiment compares 6 classifiers across 3 feature-selection conditions:
 
 ```text
-Classifiers
-    │
-    ├── Linear-Based
-    │
-    ├── Tree-Based
-    │
-    ├── Kernel-Based
-    │
-    ├── Ensemble
-    │
-    └── Discriminant
+6 classifiers × 3 feature-selection conditions = 18 experiments
 ```
 
-Each classifier must expose a consistent fit() and predict() interface through the selected Machine Learning framework.
+The three feature-selection conditions are:
 
----
+1. `All Features`
+2. `F-Classif`
+3. `RFE`
 
-### Experiment Matrix
+F-Classif and RFE are configured to use some features. All Features uses the complete 561-feature matrix.
 
-Every configured classifier will be evaluated under all three feature conditions.
-
-N classifiers × 3 feature conditions = N × 3 experiments
-
-This ensures that every classifier receives the same feature-condition comparison.
-
----
-
-## Component & Data Flow
-
-The system will be divided into the following logical components:
-
-```text
-                    ┌──────────────────┐
-                    │   Dataset Files  │
-                    │ train.csv/test   │
-                    │   dataset/       │
-                    └────────┬─────────┘
-                             │
-                             ▼
-                    ┌──────────────────┐
-                    │  Data Loader &   │
-                    │    preprocess    │
-                    │ data_loader.py   │
-                    └────────┬─────────┘
-                             │
-                             ▼
-                    ┌──────────────────┐
-                    │ Feature / Target │
-                    │    Processor     │
-                    │     main.py      │
-                    └────────┬─────────┘
-                             │
-              ┌──────────────┼──────────────┐
-              │              │              │
-              ▼              ▼              ▼
-        ┌──────────┐   ┌───────────┐   ┌──────────┐
-        │   ALL    │   │           │   │   RFE    │
-        │ Features │   │   Anova   │   │          │
-        │          │   │           │   │          │
-        └────┬─────┘   └─────┬─────┘   └────┬─────┘
-             │               │              │
-             └───────────────┼──────────────┘
-                             │
-                             ▼
-                    ┌──────────────────┐
-                    │    Classifier    │
-                    │     models.py    │
-                    └────────┬─────────┘
-                             │
-                             ▼
-                    ┌──────────────────┐
-                    │ Experiment Runner│
-                    │run_experiment.py │
-                    └────────┬─────────┘
-                             │
-                             ▼
-                    ┌──────────────────┐
-                    │    Evaluation    │
-                    │  evaluation.py   │
-                    └────────┬─────────┘
-                             │
-                             ▼
-                    ┌──────────────────┐
-                    │  Result Storage  │
-                    │results/          │
-                    │experiment_results│
-                    │     .csv         │
-                    └────────┬─────────┘
-                             │
-                             ▼
-                    ┌──────────────────┐
-                    │ Reporting in     │
-                    │    Notebook      │
-                    │results/          │
-                    │ notebook.ipynb   │
-                    └──────────────────┘
-```
-
----
-
-## Component Responsibilities
-
-### 1. Data Loader
-
-Responsible for loading the training and testing datasets.
-
----
-
-### 2. Data Validator
-
-Responsible for checking:
-
-- Required columns.
-- Missing values.
-- Feature counts.
-- Target availability.
-- Training/test feature consistency.
-- Data types where required.
-
----
-
-### 3. Feature Processor
-
-Responsible for:
-
-- Separating sensor features from metadata.
-- Separating `subject`.
-- Separating `Activity`.
-- Preparing the feature matrices used by the experiments.
-
----
-
-### 4. Feature Selection Module
-
-The feature-selection module will provide a common interface for the different feature conditions.
-
-Supported methods:
-
-```text
-all
-Anova
-rfe
-```
-
-For the `all` condition, no feature selection will be performed.
-
-For `Anova`, the Anova selector will be created.
-
-For `rfe`, the configured RFE selector will be created.
-
----
-
-### 5. Classifier Factory
-
-The classifier factory will centralize model construction.
-
-The factory will return a configured classifier instance.
-
-Classifier configuration should include relevant parameters such as:
-
-```text
-classifier name
-classifier family
-hyperparameters
-random state where applicable
-```
-
-Keeping classifier creation centralized prevents different experiments from accidentally using inconsistent configurations.
-
----
-
-### 6. Experiment Runner
-
-The experiment runner is responsible for orchestrating the complete experiment matrix.
-
-The runner will:
-
-1. Load the dataset.
-2. Validate the dataset.
-3. Prepare training and testing features.
-4. Generate the three feature conditions.
-5. Iterate through every configured classifier.
-6. Train each classifier.
-7. Measure training time.
-8. Generate predictions.
-9. Calculate evaluation metrics.
-10. Store the results.
-
----
-
-## Evaluation Component
-
-The evaluation component will provide a common interface for all experiments.
-
-The evaluator will calculate:
-
-- Accuracy
-- Precision
-- Recall
-- F1-score
-- Confusion matrix
-
-The evaluation procedure must remain consistent across all classifier-feature combinations.
-
----
-
-## Training-Time Measurement
-
-Training time will be measured around the classifier training operation.
-
-Conceptual flow:
-
-```text
-Start Timer
-     ↓
-model.fit(X_train, y_train)
-     ↓
-Stop Timer
-     ↓
-Store Training Time
-```
-
-Training time will be recorded separately for every experiment.
-
-Feature-selection time may also be recorded separately if required for computational analysis.
-
----
-
-## Result Schema
-
-The result storage layer will maintain a consistent structure.
-
-Minimum result fields:
-
-```text
-classifier
-classifier_family
-feature_condition
-accuracy
-precision
-recall
-f1_score
-training_time
-```
-
-Results will be saved to:
-
-```text
-results/
-└── experiment_results.csv
-```
-
----
-
-## Confusion Matrix Storage
-
-A confusion matrix will be generated for every classifier-feature combination and included in the final report.
-
----
-
-## Configuration Management
-
-Model and experiment configurations will be separated from execution logic.
-
-A centralized configuration should define:
-
-```text
-Feature Conditions
-Classifier List
-Classifier Families
-Anova Parameters
-RFE Parameters
-Evaluation Parameters
-Output Paths
-Random States
-```
-
-This allows experiments to be modified without changing the core experiment runner.
-
----
-
-## Proposed Project Structure
-
-The architecture should follow a modular structure similar to:
+## Current project structure
 
 ```text
 Capstone_1/
-│
 ├── architecture/
 │   ├── design.md
 │   └── proposal.md
-│
 ├── dataset/
-│   ├── test.csv
-│   └── train.csv
-│
+│   ├── train.csv
+│   └── test.csv
+├── results/
+│   ├── experiment_results.csv
+│   ├── notebook.ipynb
+│   └── graphs/
 ├── src/
 │   ├── data_loader.py
 │   ├── evaluation.py
 │   ├── feature_selection.py
 │   └── models.py
-│
-├── run_experiment.py
-|
-├── results/
-|   |── experiment_results.csv
-│   └── notebook.ipynb
-│
-├── .gitignore
-├── CHANGELOG.md
-├── HANDOFF.md
-├── README.md
+├── main.py
+├── run_experiments.py
 ├── requirements.txt
-
-```
----
-
-## Security & Data Integrity Considerations
-
-### Test Data Isolation
-
-The test dataset must remain isolated from model fitting.
-
-The following operations must not use test data:
-
-- Feature-selection fitting
-- Model training
-- Hyperparameter selection based on test performance
-
-The test dataset will only be used for final evaluation.
-
-### Dataset Integrity
-
-The original dataset files will be treated as read-only inputs.
-
-No preprocessing operation should overwrite the original CSV files.
-
-### Reproducibility
-
-Randomized algorithms should use fixed random states where supported.
-
-Experiment configurations should be version-controlled alongside the project.
-
----
-
-## Leakage Prevention
-
-The architecture must ensure that feature selection occurs only on training data.
-
-Feature selection must be fitted exclusively on training data. The fitted selector is then applied to both training and test data. Test data must never influence feature selection or model training.
-
----
-
-## Experiment Reproducibility
-
-The complete experiment will be executable using:
-
-```bash
-python run_experiment.py
+├── HANDOFF.md
+└── README.md
 ```
 
-The command will execute the configured classifier × feature-condition matrix and generate the experiment results.
+## Architectural decisions
 
-The reporting notebook will read the persisted results rather than retraining models unnecessarily.
+### Data source
 
----
+The system uses the existing files:
 
-## Reporting Architecture
+- dataset/train.csv
+- dataset/test.csv
 
-The reporting notebook will remain separate from the core Machine Learning implementation.
+The source CSV files must not be modified by preprocessing or training.
+
+### Feature and target separation
+
+The subject and Activity columns are removed from the model feature .
 
 ```text
-                 Core Pipeline
-                      │
-                      ▼
-              experiment_results.csv
-                      │
-                      ▼
-                Notebook.ipynb
-                      │
-          ┌───────────┼───────────┐
-          ▼           ▼           ▼
-      Comparisons  Charts     Analysis
+X = all columns except subject and Activity
+y = Activity
 ```
 
-The notebook will be responsible for:
+### Feature-selection conditions
 
-- Loading results.
-- Comparing classifiers.
-- Comparing feature conditions.
-- Visualizing accuracy.
-- Visualizing training time.
-- Displaying confusion matrices.
-- Analyzing per-class metrics.
-- Identifying the best-performing configuration.
-- Presenting the final recommendation.
+#### All Features
 
----
+Uses all 561 sensor features without reducing the feature matrix.
 
-## Final Model Selection
+#### F-Classif
 
-No classifier will be considered the final model before the experiments are completed.
+Uses `SelectKBest` with `f_classif` to rank features according to their relationship with the activity classes.
 
-The final recommendation will be based on predictive performance, computational efficiency, feature reduction, and per-class performance. The highest accuracy model will not automatically be selected if another configuration provides a better overall trade-off.
+#### RFE
 
----
+Uses Recursive Feature Elimination with a balanced Random Forest estimator. RFE repeatedly removes less important features until the configured number of features remains.
 
-## Architectural Constraints
+All selectors must be fitted using training data only. The fitted selector is then applied to test data.
 
-The following constraints are mandatory:
+### Classifier list
 
-- All selected classifiers must be evaluated.
-- Every classifier must be evaluated under all three feature conditions.
-- The three feature conditions must be All Features, Anova and RFE.
-- Anova must be implemented as the filter-based selection method.
-- RFE must be implemented as the wrapper-based selection method.
-- Test data must not be used for feature selection or model training.
-- The subject identifier must remain separate from the sensor feature matrix.
-- Original dataset files must not be modified.
-- Training time must be recorded.
-- Accuracy, precision, recall, F1-score, and confusion matrices must be generated.
-- Experiment results must be persisted.
-- Model configurations must be centralized.
-- The experiment must be executable through a single entry point.
-- Core Machine Learning logic must remain outside the final reporting notebook.
-- The architecture must remain modular and reproducible.
+The six current classifiers are:
 
----
+- Logistic Regression
+- K-Nearest Neighbors
+- RBF Support Vector Machine
+- Extra Trees
+- Random Forest
+- Linear Discriminant Analysis
 
-## Implementation Sequence
+## Function signatures
 
-The recommended implementation order is:
+The following signatures describe every function currently present in the four core source modules.
+
+### `src/data_loader.py`
+
+```python
+def load_data() -> pandas.DataFrame
+```
+
+Loads and returns `dataset/train.csv` as a pandas DataFrame.
+
+```python
+def test_data() -> pandas.DataFrame
+```
+
+Loads and returns `dataset/test.csv` as a pandas DataFrame.
+
+```python
+def data_info() -> None
+```
+
+Loads the training data and prints its shape, information, and first five rows.
+
+```python
+def feture() -> pandas.DataFrame
+```
+
+Returns the training sensor features after removing `subject` and `Activity`.
+
+```python
+def target() -> pandas.Series
+```
+
+Returns the training `Activity` labels.
+
+```python
+def test_feture() -> pandas.DataFrame
+```
+
+Returns the test sensor features after removing `subject` and `Activity`.
+
+```python
+def test_target() -> pandas.Series
+```
+
+Returns the test Activity labels.
+
+### `src/feature_selection.py`
+
+```python
+def all_features_fs() -> sklearn.feature_selection.SelectKBest
+```
+
+Returns a SelectKBest selector with `f_classif` and k="all", representing the All Features condition.
+
+```python
+def f_classif_selection(k: int = 350) -> sklearn.feature_selection.SelectKBest
+```
+
+Returns a SelectKBest F-Classif selector configured to retain k features.
+
+```python
+def rfe_feature_selection(k: int = 350) -> sklearn.feature_selection.RFE
+```
+
+Creates a balanced RandomForestClassifier estimator and returns an RFE selector configured to retain k features with step=10.
+
+### `src/models.py`
+
+For the model functions below, selector is a fitted feature selector and the return value .
+
+```python
+def extra_trees_model(selector: sklearn.base.BaseEstimator) -> sklearn.pipeline.Pipeline
+```
+
+Returns transformation, the supplied selector, and a 500-tree `ExtraTreesClassifier`.
+
+```python
+def logistic_regression_model(selector: sklearn.base.BaseEstimator) -> sklearn.pipeline.Pipeline
+```
+
+Returns the supplied selector and LogisticRegression using `C=1.0`, `solver="lbfgs"`, and `max_iter=5000`.
+
+```python
+def knn_model(selector: sklearn.base.BaseEstimator) -> sklearn.pipeline.Pipeline
+```
+
+Returns a pipeline with StandardScaler the supplied selector, and distance-weighted KNN using seven neighbors.
+
+```python
+def rbf_svm_model(selector: sklearn.base.BaseEstimator) -> sklearn.pipeline.Pipeline
+```
+
+Returns a pipeline with StandardScaler the supplied selector, and an RBF-kernel SVM using `C=10` and balanced class weights.
+
+```python
+def random_forest_model(selector: sklearn.base.BaseEstimator) -> sklearn.pipeline.Pipeline
+```
+
+Returns a pipeline with StandardScaler, the supplied selector, and a 500-tree `RandomForestClassifier`.
+
+```python
+def lda_model(selector: sklearn.base.BaseEstimator) -> sklearn.pipeline.Pipeline
+```
+
+Returns a pipeline with StandardScaler the supplied selector, and `LinearDiscriminantAnalysis` using the SVD solver.
+
+### `src/evaluation.py`
+
+The current evaluation module expects prediction helpers named `model_prediction` and `model_pred_test` to be available from `src.models`.
+
+```python
+def traing() -> tuple[float, str]
+```
+
+Trains or obtains the configured model, predicts the training data, and returns training accuracy and a training classification report. The function name is an existing spelling mistake for `training`.
+
+```python
+def testing() -> tuple[float, str]
+```
+
+Obtains test predictions and returns test accuracy and a test classification report.
+
+```python
+def create_result(file_name: str) -> None
+```
+
+Runs the training and testing evaluation functions and writes the resulting metrics to the supplied output path.
+
+## Experiment matrix
+
+Every experiment selects 350 features and records model name, feature-selection condition, train accuracy, test accuracy, training time, testing time, and classification reports in `results/experiment_results.csv`.
+
+## Evaluation
+
+The evaluation procedure uses:
+
+- Accuracy
+- Per-class precision
+- Per-class recall
+- Per-class F1-score
+- Training time
+- Testing time
+- Number of selected features
+
+Confusion-matrix visualization is a reporting improvement for the next stage.
+
+## Data leakage prevention
+
+The test dataset must not be used for:
+
+- Fitting feature selectors
+- Fitting preprocessing transformations
+- Training classifiers
+- Choosing hyperparameters
+
+Selectors and preprocessing must be fitted on training data only and then applied to the test data.
+
+## Results and reporting
+
+The completed experiment results are stored in:
 
 ```text
-1. Dataset Loader
-        ↓
-2. Dataset Validator
-        ↓
-3. Feature / Target Processor
-        ↓
-4. Anova Feature Selector
-        ↓
-5. RFE Feature Selector
-        ↓
-6. Classifier Factory
-        ↓
-7. Evaluation Module
-        ↓
-8. Experiment Runner
-        ↓
-9. Result Storage
-        ↓
-10. Final Reporting Notebook
+results/experiment_results.csv
 ```
 
-Each component should be independently testable before being integrated into the complete experiment pipeline.
+The reporting notebook is:
 
----
+```text
+results/notebook.ipynb
+```
+
+The best recorded configuration is Logistic Regression with RFE and 350 selected features, achieving approximately 96.23% test accuracy.
+
+## Current implementation notes
+
+1. `main.py` is a model entry point .
+2. `src/evaluation.py` imports `model_prediction` and `model_pred_test`, but those functions are not present in the current `src/models.py`. 
+3. The completed 18-experiment results were produced through the notebook workflow and are already persisted in `results/experiment_results.csv`.
+
+## Reproducibility
+
+- Keep the original CSV files unchanged.
+- Run commands from the project root unless path handling is made independent of the working directory.
+- Use the local virtual environment in venv/.
+- Install dependencies from requirements.txt.
+
+## Implementation sequence
+
+1. Reconcile `src/evaluation.py`, `src/models.py`, and `main.py`.
+2. Extract the notebook’s 18-experiment loop into a maintainable Python runner.
+3. Add confusion-matrix calculation and reporting.
+4. Keep result storage and notebook reporting separate from model implementation.

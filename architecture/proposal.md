@@ -9,7 +9,7 @@ The system will classify observations into six human activities.
 The project will compare multiple classifiers from different Machine Learning families and evaluate their performance under three feature conditions:
 
 1. All 561 sensor-derived features
-2. Features selected using **Mutual Information**
+2. Features selected using **Anova**
 3. Features selected using **Recursive Feature Elimination (RFE)**
 
 Data loading, preprocessing, feature selection, model training, evaluation, and experiment execution will be organized into separate modules. The final notebook will be used only for reporting and visualization of results generated during the process.
@@ -33,7 +33,7 @@ The project will also investigate whether feature selection can reduce the dimen
 
 - **ADDED**: A modular data-loading and validation component for train.csv and test.csv.
 - **ADDED**: An all-features experimental condition using the complete sensor feature set.
-- **ADDED**: A filter-based feature-selection condition using **Mutual Information**.
+- **ADDED**: A filter-based feature-selection condition using **Anova**.
 - **ADDED**: A wrapper-based feature-selection condition using **Recursive Feature Elimination (RFE)**.
 - **ADDED**: The classifiers will span multiple Machine Learning families.
 - **ADDED**: A common experiment pipeline for evaluating every classifier under every feature condition.
@@ -56,7 +56,7 @@ The project will also investigate whether feature selection can reduce the dimen
 The experiment will evaluate every selected classifier under three feature conditions:
 
 1. **All Features** — All 561 sensor-derived features.
-2. **Mutual Information** — Filter-based feature selection using Mutual Information.
+2. **Anova** — Filter-based feature selection using Anova.
 3. **RFE** — Wrapper-based feature selection.
 
 The selected classifiers will represent multiple Machine Learning algorithm families. Each classifier will be evaluated under all three feature conditions using the same evaluation procedure to ensure a fair comparison.
@@ -83,9 +83,9 @@ The original datasets will remain unchanged throughout the experiment.
 
 Two feature-selection techniques from different methodological families will be evaluated in addition to the all-features condition.
 
-### 6.1 Mutual Information
+### 6.1 ANOVA
 
-Mutual Information will be used as a filter-based feature-selection method to identify features that provide relevant information about the target activity classes.
+ANOVA will be used as a filter-based feature-selection method to identify features that have a statistically significant relationship with the target activity classes.
 
 ### 6.2 Recursive Feature Elimination (RFE)
 
@@ -96,7 +96,7 @@ Recursive Feature Elimination (RFE) will be used as a wrapper-based feature-sele
 The experiment will compare three feature conditions:
 
 1. **All Features** — All 561 sensor-derived features.
-2. **Mutual Information** — Features selected using the filter-based Mutual Information method.
+2. **Anova** — Features selected using the filter-based Anova method.
 3. **RFE** — Features selected using the wrapper-based Recursive Feature Elimination method.
 
 Feature selection will be performed using training data only. The test dataset will not be used during feature selection to prevent information leakage.
@@ -148,10 +148,10 @@ Core data processing, model training, feature selection, and evaluation logic wi
 ## 10. Risks & Dependencies
 
 - **Risk**: Data leakage during feature selection could produce overly optimistic evaluation results.
-  - **Mitigation**: Fit Mutual Information and RFE using training data only and prevent test data from influencing feature selection.
+  - **Mitigation**: Fit Anova and RFE using training data only and prevent test data from influencing feature selection.
 
 - **Risk**: The 561-dimensional feature space may increase training time for certain classifiers.
-  - **Mitigation**: Compare all-feature performance against Mutual information and RFE conditions and record training time.
+  - **Mitigation**: Compare all-feature performance against Anova and RFE conditions and record training time.
 
 - **Risk**: RFE may require significant computational resources because it repeatedly trains an estimator.
   - **Mitigation**: Record feature-selection execution time and configure the number of selected features appropriately.
@@ -178,13 +178,11 @@ The experiment will identify the strongest classifier-feature combination based 
 
 The resulting analysis will provide insight into:
 
-- The effect of Mutual Information-based feature selection on model accuracy.
+- The effect of Anova-based feature selection on model accuracy.
 - The effect of RFE-based feature selection on model accuracy.
 - The effect of feature selection on training time.
 - Differences between classifier families.
 - Activities that are most frequently confused.
 - The trade-off between model performance and computational cost.
-
-The final model recommendation will be supported by experimental evidence rather than theoretical assumptions.
 
 ---

@@ -12,6 +12,28 @@ All notable changes to this project will be documented in this file.
 
 ## 10-09-2026
 
+**commit:** `feat: add run_experiments to run entire project`
+
+### Added
+
+- Added run_experiments.py to run the complete experiment pipeline.
+- Added support for running the project experiments from a single script.
+
+### Changed
+
+- Updated the project structure to support running the full experiment grid.
+- Removed old generated result files and outdated presentation notebook.
+
+## 10-09-2026
+
+**commit:** `docs: update project documentation`
+
+### Changed
+
+- Updated the docs and altered some content
+
+## 10-09-2026
+
 **commit:** `feat: add result graphs and two  models`
 
 ### Added

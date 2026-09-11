@@ -1,291 +1,216 @@
 # Human Activity Recognition
 
-Machine Learning project for recognizing human activities using smartphone sensor data.
+Machine-learning project for recognizing human activities from smartphone accelerometer and gyroscope data.
 
-The project compares multiple Machine Learning classifiers and feature-selection techniques to determine which combination provides the best balance between predictive performance and computational efficiency.
+The project compares classification models and feature-selection techniques to understand which combination provides the best predictive performance and computational trade-off.
 
-## Project Objective
+## Project overview
 
-The dataset contains 561 sensor-derived features collected from smartphone accelerometer and gyroscope measurements.
+Each dataset row contains 561 sensor-derived features, a participant identifier, and an activity label. The model predicts one of six activities:
 
-The main objectives of the project are:
+- WALKING
+- WALKING_UPSTAIRS
+- WALKING_DOWNSTAIRS
+- SITTING
+- STANDING
+- LAYING
 
-- Compare classifiers from different Machine Learning families.
-- Compare the performance of using all features with feature-selection methods.
-- Analyze the effect of feature selection on model performance and training time.
-- Identify the best classifier-feature combination based on experimental results.
+This is a supervised, multiclass classification problem.
 
+## Data flow
+
+```mermaid
+flowchart TD
+    A[dataset/train.csv and dataset/test.csv] --> B[Load data]
+    B --> C[Separate sensor features]
+    C --> D[Remove subject identifier]
+    D --> E{Feature condition}
+
+    E -->|All Features| F[Use all 561 features]
+    E -->|F-Classif| G[SelectKBest f_classif]
+    E -->|RFE| H[Recursive Feature Elimination]
+
+    F --> I[Model pipeline]
+    G --> I
+    H --> I
+
+    I --> J[Logistic Regression]
+    I --> K[K-Nearest Neighbors]
+    I --> L[RBF Support Vector Machine]
+    I --> M[Extra Trees]
+    I --> N[Random Forest]
+    I --> O[LDA]
+
+    J --> P[Predictions]
+    K --> P
+    L --> P
+    M --> P
+    N --> P
+    O --> P
+
+    P --> Q[Accuracy, precision, recall, F1]
+    Q --> R[CSV results]
+    R --> S[Notebook analysis and visualizations]
+```
 
 ## Dataset
 
-The project uses predefined training and testing datasets:
+The 563 columns consist of:
 
-- `dataset/train.csv`
-- `dataset/test.csv`
+- 561 numerical sensor features
+- subject - the participant identifier
+- Activity - the target label
 
-Each observation contains:
+The subject column is excluded from model training .
 
-- **561 sensor-derived features**
-- `subject` — participant identifier
-- `Activity` — target variable
-
-The `subject` column is kept separate from the sensor feature matrix as it identifies the participant rather than representing a sensor measurement.
-
-The original dataset files are treated as read-only inputs and are not modified during the experiment.
-
-## Activities
-
-The dataset contains six human activities:
-
-- `WALKING`
-- `WALKING_UPSTAIRS`
-- `WALKING_DOWNSTAIRS`
-- `SITTING`
-- `STANDING`
-- `LAYING`
-
-## Feature Conditions
-
-Each configured classifier is evaluated under three feature conditions.
-
-### All Features
-
-Uses all 561 sensor-derived features.
-
-This acts as the baseline and allows us to measure whether feature selection improves performance or reduces computational cost.
-
-### Anova
-
-Uses Anova as the filter-based feature-selection method.
-
-ANOVA identifies features that provide relevant information about the target activity classes.
-
-It provides a fast and model-independent feature-selection condition.
-
-### RFE
-
-Uses Recursive Feature Elimination (RFE) as the wrapper-based feature-selection method.
-
-RFE recursively removes less useful features using a configured estimator.
-
-It provides a model-dependent feature-selection condition for comparison with Anova.
-
-Feature selection is fitted using training data only and the fitted selector is then applied to the test data.
-
-## Experiment Strategy
-
-Every configured classifier is evaluated under all three feature conditions.
-
-```text
-Classifier 1
-    ├── All Features
-    ├── Anova
-    └── RFE
-
-Classifier 2
-    ├── All Features
-    ├── Anova
-    └── RFE
-
-...
-
-Classifier N
-    ├── All Features
-    ├── Anova
-    └── RFE
-```
-
-The total number of experiments is:
-
-Number of classifiers * 3 Feature conditions
-
-## Machine Learning Families
-
-The project includes classifiers from:
-
-- Linear-Based
-- Tree-Based
-- Kernel-Based
-- Ensemble
-- Discriminant
-
-## Architecture
-
-```text
-Dataset
-↓
-Data Loading
-↓
-Data preprocess
-↓
-Feature / Target Separation
-↓
-Feature Selection
-├── All Features
-├── Anova
-└── RFE
-↓
-Classifier
-↓
-Training
-↓
-Evaluation
-↓
-Result Storage
-↓
-Reporting Notebook
-```
-
-## Project Structure
+## Repository structure
 
 ```text
 Capstone_1/
 ├── architecture/
-│   ├── design.md
-│   └── proposal.md
+│   ├── design.md 
+│   └── proposal.md  
 ├── dataset/
-│   ├── test.csv
-│   └── train.csv
-├── src/
-│   ├── data_loader.py
-│   ├── evaluation.py
-│   ├── feature_selection.py
-│   └── models.py
-├── run_experiment.py
+│   ├── train.csv   
+│   └── test.csv  
 ├── results/
-│   ├── experiment_results.csv
-│   └── notebook.ipynb
-├── .gitignore
-├── CHANGELOG.md
-├── HANDOFF.md
-├── README.md
-└── requirements.txt
+│   ├── experiment_results.csv 
+│   └── notebook.ipynb     
+├── src/
+│   ├── data_loader.py      
+│   ├── evaluation.py       
+│   ├── feature_selection.py   
+│   └── models.py      
+├── main.py   
+├── run_experiments.py            
+├── requirements.txt   
+├── HANDOFF.md     
+└── README.md         
 ```
-## Modules
 
-### `data_loader.py`
+## Machine-learning models
 
-Loads and preprocesses the training and testing datasets and prepares the feature and target data.
+The current implementation includes six classifiers.
 
-### `feature_selection.py`
+Several models use a scikit-learn Pipeline containing preprocessing, feature selection, and classification. This keeps transformations applied consistently during training and prediction.
 
-Provides the Anova and RFE feature-selection methods.
+## Feature selection
 
-### `models.py`
+The project compares three feature conditions. They are All Features, F-Classif, and RFE. The completed selection-based experiments use 350 selected features.
 
-Creates and configures the Machine Learning classifiers.
+### All Features
 
-### `evaluation.py`
+Uses all 561 sensor features without feature reduction.
 
-Calculates accuracy, precision, recall, F1-score, confusion matrix, and training time.
+### F-Classif
 
-### `run_experiment.py`
+Uses `SelectKBest` with `f_classif` to rank features according to their relationship with the activity classes.
 
-Runs the complete classifier × feature-condition experiment matrix and stores the results.
+### RFE
 
-### `results/experiment_results.csv`
+Recursive Feature Elimination uses a Random Forest estimator to repeatedly remove less important features until 350 remain. It is implemented in `src/feature_selection.py`.
 
-Stores the experiment results.
+## Experiment matrix
 
-### `results/notebook.ipynb`
+The completed experiment compares every classifier with every feature condition:
 
-Used for reporting, visualization, comparison, and final analysis.
+```mermaid
+flowchart LR
+    A[6 classifiers] --> A1[Logistic Regression]
+    A --> A2[KNN]
+    A --> A3[RBF SVM]
+    A --> A4[Extra Trees]
+    A --> A5[Random Forest]
+    A --> A6[LDA]
 
-## Evaluation
+    B[3 feature conditions] --> B1[All Features]
+    B --> B2[F-Classif]
+    B --> B3[RFE]
 
-Each experiment is evaluated using:
+    A1 --> C[Evaluate every classifier × feature-condition pair]
+    A2 --> C
+    A3 --> C
+    A4 --> C
+    A5 --> C
+    A6 --> C
+    B1 --> C
+    B2 --> C
+    B3 --> C
 
-- Accuracy
-- Precision
-- Recall
-- F1-score
-- Confusion Matrix
-- Training Time
+    C --> D[Persist comparable results]
+```
 
-The confusion matrix helps identify activities that are frequently confused.
-
-Training time is recorded to compare computational cost.
-
-## Data Leakage Prevention
-
-The test dataset is used only for final evaluation.
-
-It is not used for:
-
-- Feature-selection fitting
-- Model training
-- Hyperparameter selection
-
-Feature selectors are fitted using training data and then applied to both training and test features.
-
-## Result Storage
-
-Results are saved to:
+The completed experiment contains:
 
 ```text
-results/experiment_results.json
+6 classifiers × 3 feature conditions = 18 experiments
 ```
-## Reporting
 
-The reporting notebook reads the saved experiment results and is used for:
+The 18 experiment records are stored in `results/experiment_results.csv`. The root `main.py` remains a legacy single-model entry point; the completed experiment is represented by the results CSV and reporting notebook.
 
-- Comparing classifiers
-- Comparing feature conditions
-- Comparing classifier families
-- Visualizing accuracy
-- Visualizing training time
-- Displaying confusion matrices
-- Analyzing per-class performance
-- Identifying the best-performing configuration
-- Providing the final recommendation
+## Evaluation metrics
 
-The notebook does not contain the core training pipeline.
+The current evaluator reports:
 
-## Final Model Selection
+- Accuracy
+- Per-class precision
+- Per-class recall
+- Per-class F1-score
 
-The final model is selected after completing all experiments.
+The experiment CSV also records training time, testing time, and the number of selected features. Confusion-matrix visualization remains a reporting improvement.
 
-The recommendation considers:
+## Existing results
 
-- Predictive performance
-- Training time
-- Feature reduction
-- Per-class performance
-- Confusion matrix
-- Computational efficiency
+The completed experiment contains these best test accuracies by feature condition:
 
-The highest accuracy model is not automatically selected if another configuration provides a better overall trade-off.
+ All Features
+ F-Classif 
+ RFE 
+
+The best recorded configuration is Logistic Regression with RFE and 350 selected features.
+
+These are stored artifacts and are not automatically regenerated by the current entry point until the data path issue is fixed.
+
+## Data leakage policy
+
+The test data must only be used for final evaluation.
+
+Feature selectors and preprocessing steps must be fitted using training data only, then applied to the test data.
+
+The original CSV files should remain unchanged.
 
 ## Setup
 
-Create a virtual environment:
+Create and activate a virtual environment:
 
 ```bash
 python -m venv venv
-```
-
-Activate it:
-
-```bash
 venv\Scripts\activate
 ```
 
-Install required packages:
+Install dependencies:
+
 ```bash
 pip install -r requirements.txt
 ```
 
+The main dependencies are:
 
-## Run
+- pandas
+- scikit-learn
+- matplotlib
 
-From the project root:
+## Running the project
+
+From the repository root:
 
 ```bash
 python main.py
 ```
-## Documentation
 
-- `architecture/proposal.md` — project objectives, scope, and experiment strategy
-- `architecture/design.md` — architecture, data flow, module responsibilities, and constraints
-- `CHANGELOG.md` — project changes
-- `HANDOFF.md` — project handoff information
+## Project documentation
+
+- architecture/proposal.md
+- architecture/design.md
+- HANDOFF.md
+- results/notebook.ipynb

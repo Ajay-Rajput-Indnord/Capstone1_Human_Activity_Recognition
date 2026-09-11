@@ -18,6 +18,7 @@ def test_data():
 
 def data_info():
     # give information about train data set loke shape of data
+    data = load_data()
     shape=data.shape
     print(shape)
     info=data.info

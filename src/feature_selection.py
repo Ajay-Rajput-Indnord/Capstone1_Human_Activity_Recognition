@@ -1,7 +1,6 @@
 from sklearn.feature_selection import (
     SelectKBest,
     f_classif,
-    mutual_info_classif,
     RFE
 )
 from sklearn.ensemble import RandomForestClassifier
@@ -21,11 +20,6 @@ def f_classif_selection(k=350):
     )
 
 
-def mutual_info_selection(k=350):
-    return SelectKBest(
-        score_func=mutual_info_classif,
-        k=k
-    )
 
 
 def rfe_feature_selection(k=350):

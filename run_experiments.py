@@ -95,7 +95,11 @@ def run_all_experiments():
             # Create fresh feature selector
             # ------------------------------------------------
 
-            selector = feature_function(k=N_FEATURES)
+            if feature_function == all_features_fs:
+                selector = feature_function(k=561)
+                
+            else:
+                selector = feature_function(k=N_FEATURES)
 
             # ------------------------------------------------
             # Create fresh model
@@ -242,12 +246,3 @@ def save_results(results):
     print("\nTotal experiments:", len(df))
 
 
-# ============================================================
-# MAIN
-# ============================================================
-
-# if __name__ == "__main__":
-
-#     results = run_all_experiments()
-
-#     save_results(results)

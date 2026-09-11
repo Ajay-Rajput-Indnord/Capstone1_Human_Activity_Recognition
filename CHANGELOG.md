@@ -1,6 +1,13 @@
 # Changelog
 
 All notable changes to this project will be documented in this file.
+## 11-09-2026
+**commit:** `feat: add full working notebook`
+
+### changed
+
+- added notebook
+
 
 ## 11-09-2026
 
